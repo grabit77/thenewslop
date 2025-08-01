@@ -1,77 +1,80 @@
-<!DOCTYPE html>
-<html lang="it">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>News & AI Art</title>
-<style>
-  body {
-    background: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    max-width: 800px;
-    margin: auto;
-    padding: 20px;
-    text-align: center;
-  }
-  img {
-    max-width: 100%;
-    border-radius: 10px;
-  }
-  .card {
-    background: #111;
-    padding: 20px;
-    margin: 20px 0;
-    border-radius: 10px;
-    text-align: left;
-  }
-  h1, h2 {
-    color: #fff;
-  }
-</style>
-</head>
-<body>
-  <h1>Ultime Notizie & Immagini AI</h1>
+<html>
+  <head>
+    <title>THE NEWSLOP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-black text-white relative overflow-x-hidden">
+    <!-- Titolo cliccabile -->
+    <div class="p-6 text-4xl font-bold cursor-pointer" onclick="toggleMenu()">
+      THE NEWSLOP
+    </div>
 
-  <div id="news-container">
-    <p>Caricamento notizie...</p>
-  </div>
+    <!-- Sidebar nascosta -->
+    <div id="sidebar"
+         class="fixed top-0 left-0 h-full w-64 bg-white text-black p-6 transform -translate-x-full transition-transform duration-300 z-50">
+      <h2 class="text-2xl font-bold mb-4">About</h2>
+      <p class="mb-4">THE NEWSLOP vuole riflettere su bias e censura dell'AI generativa partendo da notizie vere.
+      Prendendo informazioni in tempo reale e tramutandole in prompt per creare un'immagine con l'AI. 
+      </p>
+      <p class="mb-4">Credits:<br> 
+      <b>Coding:</b> gab, ChatGPT<br> 
+      <b>News:</b> Chronocol<br> 
+      <b>Prompt di partenza:</b> Scrivi un prompt in inglese (max 1000 caratteri) per generare un'immagine fotorealistica seria e drammatica, che rifletta sulla crudeltà umana basata su questa notizia.<br>
+      <b>Prompting per immagine:</b> ChatGPT<br>
+      <b>Image Generation:</b> stablehorde<br>
+      <b>Idea:</b> gab<br>
+      <b>Special thanks:</b> Lau<br></p>
+      <button class="mt-4 bg-black text-white px-4 py-2 rounded" onclick="toggleMenu()">Chiudi</button>
+    </div>
 
-<script>
-  async function loadNews() {
-    try {
-      const res = await fetch('news.json');
-      const newsList = await res.json();
+    <!-- Contenitore centrale -->
+    <div class="flex flex-col items-center justify-center mt-10">
+      
+      <!-- Pulsanti -->
+      <div class="flex justify-center mt-6 space-x-4">
+        {prev_btn} {next_btn}
+      </div>
 
-      if (!newsList.length) {
-        document.getElementById('news-container').innerHTML = '<p>Nessuna notizia disponibile.</p>';
-        return;
+      <!-- Immagine -->
+      <img 
+        id="newsImage"
+        style="width:800px;"
+        src="{image_path}" 
+        class="cursor-pointer m-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+        onclick="togglePanel()" 
+      />
+
+      <!-- Pannello nascosto -->
+      <div 
+        id="infoPanel" 
+        style="width:800px"
+        class="hidden bg-white text-black p-6 mt-6 cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
+        onclick="togglePanel()"
+      >
+        <p class="text-lg font-bold">{timestamp}</p>
+        <p class="mt-2"><b>News:</b> {news_text}</p>
+        <p class="mt-2"><b>Prompt:</b> {prompt}</p>
+      </div>
+    </div>
+
+    <script>
+      function togglePanel() {
+        const img = document.getElementById("newsImage");
+        const panel = document.getElementById("infoPanel");
+
+        if (img.classList.contains("hidden")) {
+          img.classList.remove("hidden");
+          panel.classList.add("hidden");
+        } else {
+          img.classList.add("hidden");
+          panel.classList.remove("hidden");
+        }
       }
 
-      const latest = newsList[0];
-
-      const html = `
-        <div class="card">
-          <img src="${latest.image}" alt="Immagine notizia" />
-          <h2>Notizia</h2>
-          <p>${latest.news}</p>
-        </div>
-        <div class="card">
-          <h2>Prompt</h2>
-          <p>${latest.prompt}</p>
-        </div>
-      `;
-
-      document.getElementById('news-container').innerHTML = html;
-
-    } catch (err) {
-      document.getElementById('news-container').innerHTML = '<p>Errore caricamento notizie.</p>';
-      console.error(err);
-    }
-  }
-
-  loadNews();
-</script>
-</body>
+      function toggleMenu() {
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("-translate-x-full");
+      }
+    </script>
+  </body>
 </html>
-
