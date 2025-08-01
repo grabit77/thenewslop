@@ -9,21 +9,22 @@
       THE NEWSLOP
     </div>
 
-    <!-- Sidebar nascosta -->
+    <!-- Sidebar -->
     <div id="sidebar"
          class="fixed top-0 left-0 h-full w-64 bg-white text-black p-6 transform -translate-x-full transition-transform duration-300 z-50">
       <h2 class="text-2xl font-bold mb-4">About</h2>
-      <p class="mb-4">THE NEWSLOP vuole riflettere su bias e censura dell'AI generativa partendo da notizie vere.
+      <p class="mb-4">THE NEWSLOP vuole riflettere su bias e censura dell'AI generativa partendo da notizie vere 
       Prendendo informazioni in tempo reale e tramutandole in prompt per creare un'immagine con l'AI. 
       </p>
-      <p class="mb-4">Credits:<br> 
-      <b>Coding:</b> gab, ChatGPT<br> 
-      <b>News:</b> Chronocol<br> 
-      <b>Prompt di partenza:</b> Scrivi un prompt in inglese (max 1000 caratteri) per generare un'immagine fotorealistica seria e drammatica, che rifletta sulla crudeltà umana basata su questa notizia.<br>
-      <b>Prompting per immagine:</b> ChatGPT<br>
-      <b>Image Generation:</b> stablehorde<br>
-      <b>Idea:</b> gab<br>
-      <b>Special thanks:</b> Lau<br></p>
+      <p class="mb-4">Credits: <br> 
+      <b>Coding:</b> gab, ChatGPT 
+      <br> <b>News:</b> Chronocol <br> 
+      <b>Prompt di partenza:</b> Scrivi un prompt in inglese (max 1000 caratteri) per generare un'immagine fotorealistica seria e drammatica, che rifletta sulla crudeltà umana
+      basata su questa notizia: <br>
+      <b>Prompting per immagine:</b> ChatGPT <br>
+      <b>Image Generation:</b> StableHorde <br>
+      <b>Idea:</b> gab <br>
+      <b>Special thanks:</b> Lau <br></p>
       <button class="mt-4 bg-black text-white px-4 py-2 rounded" onclick="toggleMenu()">Chiudi</button>
     </div>
 
@@ -31,15 +32,13 @@
     <div class="flex flex-col items-center justify-center mt-10">
       
       <!-- Pulsanti -->
-      <div class="flex justify-center mt-6 space-x-4">
-        {{prev_btn}} {{next_btn}}
-      </div>
+      <div class="flex justify-center mt-6 space-x-4" id="buttons"></div>
 
       <!-- Immagine -->
       <img 
         id="newsImage"
+	src="/static/images/1.png"
         style="width:800px;"
-        src="{{image_path}}" 
         class="cursor-pointer m-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()" 
       />
@@ -51,30 +50,60 @@
         class="hidden bg-white text-black p-6 mt-6 cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()"
       >
-        <p class="text-lg font-bold">{{timestamp}}</p>
-        <p class="mt-2"><b>News:</b> {{news_text}}</p>
-        <p class="mt-2"><b>Prompt:</b> {{prompt}}</p>
+        <p class="text-lg font-bold" id="timestamp"></p>
+        <p class="mt-2"><b>News:</b> <span id="newsText"></span></p>
+        <p class="mt-2"><b>Prompt:</b> <span id="prompt"></span></p>
       </div>
     </div>
 
     <script>
-      function togglePanel() {
-        const img = document.getElementById("newsImage");
-        const panel = document.getElementById("infoPanel");
+      let newsData = [];
+      let currentIndex = 0;
 
-        if (img.classList.contains("hidden")) {
-          img.classList.remove("hidden");
-          panel.classList.add("hidden");
-        } else {
-          img.classList.add("hidden");
-          panel.classList.remove("hidden");
+      async function loadNews() {
+        try {
+          const res = await fetch("news.json?cache=" + Date.now());
+          newsData = await res.json();
+          if (newsData.length > 0) {
+            currentIndex = 0; // Mostra l'ultima news
+            showNews(currentIndex);
+          }
+        } catch (e) {
+          console.error("Errore nel caricamento di news.json", e);
         }
       }
 
-      function toggleMenu() {
-        const sidebar = document.getElementById("sidebar");
-        sidebar.classList.toggle("-translate-x-full");
+      function showNews(index) {
+        const news = newsData[index];
+        if (!news) return;
+
+        // Inserisco i dati corretti
+        document.getElementById("newsImage").src = "static/images/" + news.image;
+        document.getElementById("timestamp").innerText = news.timestamp;
+        document.getElementById("newsText").innerText = news.news;
+        document.getElementById("prompt").innerText = news.prompt;
+
+        // Creo i pulsanti
+        let btns = "";
+        if (index + 1 < newsData.length) {
+          btns += `<button onclick="showNews(${index+1})" class="bg-gray-700 px-4 py-2 rounded">prev</button>`;
+        }
+        if (index > 0) {
+          btns += `<button onclick="showNews(${index-1})" class="bg-gray-700 px-4 py-2 rounded">next</button>`;
+        }
+        document.getElementById("buttons").innerHTML = btns;
       }
+
+      function togglePanel() {
+        document.getElementById("newsImage").classList.toggle("hidden");
+        document.getElementById("infoPanel").classList.toggle("hidden");
+      }
+
+      function toggleMenu() {
+        document.getElementById("sidebar").classList.toggle("-translate-x-full");
+      }
+
+      loadNews();
     </script>
   </body>
 </html>
