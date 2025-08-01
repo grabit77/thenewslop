@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>News & AI Art</title>
+<style>
+  body {
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+    text-align: center;
+  }
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+  .card {
+    background: #111;
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;
+    text-align: left;
+  }
+  h1, h2 {
+    color: #fff;
+  }
+</style>
+</head>
+<body>
+  <h1>Ultime Notizie & Immagini AI</h1>
+
+  <div id="news-container">
+    <p>Caricamento notizie...</p>
+  </div>
+
+<script>
+  async function loadNews() {
+    try {
+      const res = await fetch('news.json');
+      const newsList = await res.json();
+
+      if (!newsList.length) {
+        document.getElementById('news-container').innerHTML = '<p>Nessuna notizia disponibile.</p>';
+        return;
+      }
+
+      const latest = newsList[0];
+
+      const html = `
+        <div class="card">
+          <img src="${latest.image}" alt="Immagine notizia" />
+          <h2>Notizia</h2>
+          <p>${latest.news}</p>
+        </div>
+        <div class="card">
+          <h2>Prompt</h2>
+          <p>${latest.prompt}</p>
+        </div>
+      `;
+
+      document.getElementById('news-container').innerHTML = html;
+
+    } catch (err) {
+      document.getElementById('news-container').innerHTML = '<p>Errore caricamento notizie.</p>';
+      console.error(err);
+    }
+  }
+
+  loadNews();
+</script>
+</body>
+</html>
+
