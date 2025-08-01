@@ -32,14 +32,14 @@
       
       <!-- Pulsanti -->
       <div class="flex justify-center mt-6 space-x-4">
-        {prev_btn} {next_btn}
+        {{prev_btn}} {{next_btn}}
       </div>
 
       <!-- Immagine -->
       <img 
         id="newsImage"
         style="width:800px;"
-        src="{image_path}" 
+        src="{{image_path}}" 
         class="cursor-pointer m-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()" 
       />
@@ -51,9 +51,9 @@
         class="hidden bg-white text-black p-6 mt-6 cursor-pointer transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()"
       >
-        <p class="text-lg font-bold">{timestamp}</p>
-        <p class="mt-2"><b>News:</b> {news_text}</p>
-        <p class="mt-2"><b>Prompt:</b> {prompt}</p>
+        <p class="text-lg font-bold">{{timestamp}}</p>
+        <p class="mt-2"><b>News:</b> {{news_text}}</p>
+        <p class="mt-2"><b>Prompt:</b> {{prompt}}</p>
       </div>
     </div>
 
