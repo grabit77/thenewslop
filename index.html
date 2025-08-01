@@ -4,7 +4,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
   <body class="bg-black text-white relative overflow-x-hidden">
-    <!-- Titolo cliccabile -->
     <div class="p-6 text-4xl font-bold cursor-pointer" onclick="toggleMenu()">
       THE NEWSLOP
     </div>
@@ -13,37 +12,34 @@
     <div id="sidebar"
          class="fixed top-0 left-0 h-full w-64 bg-white text-black p-6 transform -translate-x-full transition-transform duration-300 z-50">
       <h2 class="text-2xl font-bold mb-4">About</h2>
-      <p class="mb-4">THE NEWSLOP vuole riflettere su bias e censura dell'AI generativa partendo da notizie vere 
-      Prendendo informazioni in tempo reale e tramutandole in prompt per creare un'immagine con l'AI. 
+      <p class="mb-4">
+        THE NEWSLOP vuole riflettere su bias e censura dell'AI generativa partendo da notizie vere,
+        prendendo informazioni in tempo reale e trasformandole in prompt per creare immagini con l'AI.
       </p>
-      <p class="mb-4">Credits: <br> 
-      <b>Coding:</b> gab, ChatGPT 
-      <br> <b>News:</b> Chronocol <br> 
-      <b>Prompt di partenza:</b> Scrivi un prompt in inglese (max 1000 caratteri) per generare un'immagine fotorealistica seria e drammatica, che rifletta sulla crudeltà umana
-      basata su questa notizia: <br>
-      <b>Prompting per immagine:</b> ChatGPT <br>
-      <b>Image Generation:</b> StableHorde <br>
-      <b>Idea:</b> gab <br>
-      <b>Special thanks:</b> Lau <br></p>
+      <p class="mb-4">
+        <b>Coding:</b> gab, ChatGPT<br>
+        <b>News:</b> Chronocol<br>
+        <b>Prompt di partenza:</b> Scrivi un prompt in inglese (max 1000 caratteri) per generare un'immagine fotorealistica seria e drammatica, che rifletta sulla crudeltà umana basata su questa notizia.<br>
+        <b>Prompting per immagine:</b> ChatGPT<br>
+        <b>Image Generation:</b> StableHorde<br>
+        <b>Idea:</b> gab<br>
+        <b>Special thanks:</b> Lau<br>
+      </p>
       <button class="mt-4 bg-black text-white px-4 py-2 rounded" onclick="toggleMenu()">Chiudi</button>
     </div>
 
     <!-- Contenitore centrale -->
     <div class="flex flex-col items-center justify-center mt-10">
-      
-      <!-- Pulsanti -->
       <div class="flex justify-center mt-6 space-x-4" id="buttons"></div>
 
-      <!-- Immagine -->
       <img 
         id="newsImage"
-	src=""
+        src=""
         style="width:800px;"
         class="cursor-pointer m-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()" 
       />
 
-      <!-- Pannello nascosto -->
       <div 
         id="infoPanel" 
         style="width:800px"
@@ -64,8 +60,12 @@
         try {
           const res = await fetch("news.json?cache=" + Date.now());
           newsData = await res.json();
+
+          // Inverti l'ordine per avere la più recente per prima
+          newsData.reverse();
+
           if (newsData.length > 0) {
-            currentIndex = 0; // Mostra l'ultima news
+            currentIndex = 0; 
             showNews(currentIndex);
           }
         } catch (e) {
@@ -76,23 +76,29 @@
       function showNews(index) {
         const news = newsData[index];
         if (!news) return;
-
-        // Inserisco i dati corretti
-        document.getElementById("newsImage").src = news.image;
-	document.getElementById("timestamp").innerText = news.timestamp ?? "Data non disponibile";
+      
+        document.getElementById("newsImage").src = "static/images/" + news.image_name;
+        document.getElementById("timestamp").innerText = news.timestamp ?? "Data non disponibile";
         document.getElementById("newsText").innerText = news.news;
         document.getElementById("prompt").innerText = news.prompt;
-
-        // Creo i pulsanti
-        let btns = "";
-        if (index + 1 < newsData.length) {
-          btns += `<button onclick="showNews(${index+1})" class="bg-gray-700 px-4 py-2 rounded">prev</button>`;
-        }
+      
+        let prevBtn = "";
+        let nextBtn = "";
+      
+        // Next → notizia più recente
         if (index > 0) {
-          btns += `<button onclick="showNews(${index-1})" class="bg-gray-700 px-4 py-2 rounded">next</button>`;
+          nextBtn = `<button onclick="showNews(${index - 1})" class="bg-gray-700 px-4 py-2 rounded">next</button>`;
         }
-        document.getElementById("buttons").innerHTML = btns;
-      }
+      
+        // Prev → notizia più vecchia
+        if (index + 1 < newsData.length) {
+          prevBtn = `<button onclick="showNews(${index + 1})" class="bg-gray-700 px-4 py-2 rounded">prev</button>`;
+        }
+      
+        // Prev a sinistra, Next a destra
+        document.getElementById("buttons").innerHTML = prevBtn + nextBtn;  
+}
+
 
       function togglePanel() {
         document.getElementById("newsImage").classList.toggle("hidden");
