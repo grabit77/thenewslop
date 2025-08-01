@@ -78,7 +78,7 @@
         if (!news) return;
 
         // Inserisco i dati corretti
-        document.getElementById("newsImage").src = "thenewslop/"+ news.image;
+        document.getElementById("newsImage").src = news.image;
         document.getElementById("timestamp").innerText = news.timestamp;
         document.getElementById("newsText").innerText = news.news;
         document.getElementById("prompt").innerText = news.prompt;
