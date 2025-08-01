@@ -37,7 +37,7 @@
       <!-- Immagine -->
       <img 
         id="newsImage"
-	src="/static/images/1.png"
+	src=""
         style="width:800px;"
         class="cursor-pointer m-5 transition-transform duration-300 hover:scale-105 hover:shadow-2xl"
         onclick="togglePanel()" 
@@ -78,7 +78,7 @@
         if (!news) return;
 
         // Inserisco i dati corretti
-        document.getElementById("newsImage").src = + news.image;
+        document.getElementById("newsImage").src = "thenewslop/"+ news.image;
         document.getElementById("timestamp").innerText = news.timestamp;
         document.getElementById("newsText").innerText = news.news;
         document.getElementById("prompt").innerText = news.prompt;
