@@ -61,5 +61,12 @@
         "prompt": "Create a photorealistic image that captures the gravity and drama of the recent European Court of Justice ruling against Italy's list of \"safe countries.\" The scene depicts two distressed Bangladeshi asylum seekers on a desolate beach in Albania, their faces etched with fear and despair, reflecting the harsh reality of their denied asylum requests. In the background, crumbling detention centers loom ominously, symbolizing the lack of transparency and justice in the immigration process. Dark, stormy skies overhead convey a sense of foreboding and helplessness, while the waves crash violently against the shore, mirroring the turmoil of the human experience caught in the cruel machinery of immigration policy. The image should evoke a powerful emotional response, emphasizing the human cost of political decisions and the urgent need for compassion and reform.",
         "image_name": "9.png",
         "timestamp": "2025-08-01 17:39:06"
+    },
+    {
+        "id": 12,
+        "news": "Trump ha ordinato il dispiegamento di due sommergibili nucleari in aree strategiche vicino alla Russia, in risposta a recenti dichiarazioni considerate “provocatorie” da parte del vicepresidente del Consiglio di Sicurezza della Federazione Russa Dmitry Medvedev.\n\n Fonte\n\n @chronocol.media",
+        "prompt": "**Prompt for Image Generation:**\n\nCreate a photorealistic and dramatic scene depicting the tension stemming from global military conflict. In the foreground, show two ominous nuclear submarines emerging from the depths of dark, turbulent waters, their silhouettes highlighted by a dim, foreboding light. Capture the sense of urgency and dread in the air. In the background, portray a stormy sky filled with dark clouds and flashes of lightning, symbolizing the brewing conflict between nations. Include shadows of military ships on the horizon, hinting at the vast, unseen forces at play. Incorporate a subtle representation of human figures, perhaps soldiers on the submarines, reflecting unease and the weight of their orders. The overall composition should evoke a sense of impending disaster and reflect on the cruel realities of human conflict driven by power and fear.",
+        "image_name": "10.png",
+        "timestamp": "2025-08-01 21:31:47"
     }
 ]
