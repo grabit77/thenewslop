@@ -5,14 +5,15 @@ set -e
 python3 export_to_json.py
 echo "✅ Esportate news in news.json"
 
-# 2️⃣ Fai pull con rebase per aggiornare la branch locale
+# 2️⃣ Aggiorna branch locale con pull (rebase) per sincronizzarti col remoto
 git pull --rebase origin main || {
-  echo "❌ Errore durante il pull, risolvere manualmente."
+  echo "❌ Errore durante il pull, risolvi manualmente."
   exit 1
 }
 
-# 3️⃣ Aggiungi **tutti** i cambiamenti e file nuovi (anche non tracciati)
-git add -A
+# 3️⃣ Aggiungi SOLO i file specifici e la cartella immagini (con tutto il contenuto)
+git add news.json news.db
+git add static/images/
 
 # 4️⃣ Controlla se ci sono modifiche da pushare
 if git diff --cached --quiet; then
